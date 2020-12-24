@@ -1,0 +1,119 @@
+:root {
+    --menu-background: #FFC700;
+    --userlist-background: #A48D3B;
+    --userselect-background: #806400;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Calibri, sans-serif;
+    letter-spacing: 2px;
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: left;
+    background: beige;
+}
+
+.main-container {
+    margin: 10px;
+    background: beige;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.4);
+}
+
+.menu-panel {
+    width: 64px;
+    height: 100%;
+    background: var(--menu-background);
+    display: flex;
+    flex-direction: column;
+}
+
+.image-container {
+    background: var(--menu-background);
+    width: 100%;
+    height: 64px;
+    margin-top: 5px;
+    align-items: baseline;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-container:hover {
+    background: var(--userlist-background);
+}
+
+.menu-image {
+    width: 32px;
+    height: 32px;
+}
+
+.user-panel {
+    width: 30%;
+    height: 100%;
+    background: var(--userlist-background);
+    display: flex;
+    flex-direction: column;
+}
+
+.user-panel-hide {
+    display: none;
+}
+
+.user-element {
+    height: 30px;
+    background: var(--userlist-background);
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+}
+
+.user-element:hover {
+    background: var(--userselect-background);
+}
+
+.user-element h3 {
+    padding: 5px;
+}
+
+.chat-panel {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.text-area {
+    height: 85%;
+    width: 95%;
+    background: green;
+
+}
+
+.message-area {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.message-area input {
+    width: 100%;
+    height: 100%;
+}

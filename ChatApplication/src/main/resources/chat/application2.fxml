@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chat.ChatFormController">
+   <children>
+      <Pane prefHeight="640.0" prefWidth="200.0">
+         <children>
+            <Accordion prefHeight="640.0" prefWidth="200.0">
+              <panes>
+                <TitledPane style="-fx-background-color: #FF9000; -fx-border-color: #FF9000;" text="Users">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ListView prefHeight="560.0" prefWidth="200.0" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Groups">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Settings">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="563.0" prefWidth="200.0">
+                                 <children>
+                                    <Pane fx:id="paneLogin" prefHeight="217.0" prefWidth="200.0">
+                                       <children>
+                                          <Label layoutX="26.0" layoutY="14.0" prefHeight="17.0" prefWidth="85.0" text="Login" />
+                                          <TextField fx:id="textLogin" layoutX="26.0" layoutY="33.0" />
+                                          <Label layoutX="26.0" layoutY="58.0" prefHeight="17.0" prefWidth="85.0" text="Password" />
+                                          <PasswordField fx:id="textPassword" layoutX="26.0" layoutY="75.0" />
+                                          <Label layoutX="26.0" layoutY="100.0" prefHeight="17.0" prefWidth="85.0" text="Nick" />
+                                          <TextField fx:id="textNick" layoutX="26.0" layoutY="117.0" />
+                                          <Button layoutX="58.0" layoutY="162.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="84.0" text="Login" />
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </TitledPane>
+              </panes>
+            </Accordion>
+         </children></Pane>
+      <VBox prefHeight="640.0" prefWidth="440.0">
+         <children>
+            <Pane prefHeight="590.0" prefWidth="440.0">
+               <children>
+                  <WebView fx:id="messageBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="440.0" />
+               </children></Pane>
+            <Pane prefHeight="50.0" prefWidth="420.0">
+               <children>
+                  <TextField fx:id="messageField" onAction="#sendMessage" prefHeight="50.0" prefWidth="440.0">
+                     <font>
+                        <Font name="Calibri" size="14.0" />
+                     </font>
+                  </TextField>
+                  <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="394.0" layoutY="9.0" onMouseClicked="#sendMessage" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/send.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children></Pane>
+         </children>
+      </VBox>
+   </children>
+</HBox>
