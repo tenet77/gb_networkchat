@@ -43,6 +43,13 @@
                            <children>
                               <VBox prefHeight="563.0" prefWidth="200.0">
                                  <children>
+                                    <Pane fx:id="paneInfo" prefHeight="83.0" prefWidth="200.0" visible="false">
+                                       <children>
+                                          <Label fx:id="labelLogin" layoutX="21.0" layoutY="2.0" prefHeight="25.0" prefWidth="164.0" text="Login: " />
+                                          <Label fx:id="labelNick" layoutX="21.0" layoutY="27.0" prefHeight="25.0" prefWidth="164.0" text="Nick:" />
+                                          <Button layoutX="50.0" layoutY="57.0" mnemonicParsing="false" onAction="#loginAgain" prefHeight="25.0" prefWidth="101.0" text="Login" />
+                                       </children>
+                                    </Pane>
                                     <Pane fx:id="paneLogin" prefHeight="217.0" prefWidth="200.0">
                                        <children>
                                           <Label layoutX="26.0" layoutY="14.0" prefHeight="17.0" prefWidth="85.0" text="Login" />

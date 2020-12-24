@@ -47,9 +47,10 @@ public class ChatServer implements Runnable {
         byte[] data = MessageService.getInstance().getSerializeMessage(msg);
         if (forClient != null) {
             forClient.sendMessage(data);
-        }
-        for (ClientHandler client : clients) {
-            client.sendMessage(data);
+        } else {
+            for (ClientHandler client : clients) {
+                client.sendMessage(data);
+            }
         }
     }
 

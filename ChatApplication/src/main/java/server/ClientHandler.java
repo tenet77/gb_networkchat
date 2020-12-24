@@ -3,7 +3,10 @@ package server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
+import java.sql.SQLException;
+
 import messages.*;
 
 public class ClientHandler implements Runnable {
@@ -57,6 +60,7 @@ public class ClientHandler implements Runnable {
                         handleMessage(message);
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     System.out.println(login + ": client crashed");
                     server.removeClient(this);
                     break;
@@ -67,7 +71,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private void handleMessage(Message msg) throws IOException {
+    private void handleMessage(Message msg) throws IOException, NoSuchMethodException, InstantiationException, SQLException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
         if (msg == null) return;
 
         if (msg instanceof AuthMessage) {
@@ -88,16 +92,22 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private void handleAuthMessage(AuthMessage msg) throws IOException {
-        this.login = msg.getLogin();
-        this.nick = msg.getNick();
-        if (this.nick.isEmpty()) {
-            this.nick = "User#" + ClientHandler.count;
-            ClientHandler.count++;
-            msg.setNick(this.nick);
+    private void handleAuthMessage(AuthMessage msg) throws IOException, NoSuchMethodException, InstantiationException, SQLException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+        if (DBConnection.getInstance().checkAuth(msg.getLogin(), msg.getPassword())) {
+
+            this.login = msg.getLogin();
+            this.nick = msg.getNick();
+            if (this.nick.isEmpty()) {
+                this.nick = "User#" + ClientHandler.count;
+                ClientHandler.count++;
+                msg.setNick(this.nick);
+            }
+            this.authOk = true;
+            msg.setAuth(true);
+            DBConnection.getInstance().updateUser(this.login, msg.getPassword(), this.nick);
+        } else {
+            msg.setMessage("Check auth failed");
         }
-        this.authOk = true;
-        msg.setAuth(true);
         server.broadCast(msg, this);
     }
 }

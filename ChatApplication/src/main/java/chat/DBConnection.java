@@ -1,7 +1,11 @@
-package server;
+package chat;
+
+import messages.TextMessage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBConnection {
 
@@ -26,9 +30,10 @@ public class DBConnection {
         checkConnection();
     }
 
-    public boolean addUser(String login, String pass, String nick) throws SQLException {
-        String sqlCommand = String.format("INSERT INTO users (login, password, nick) VALUES(\"%s\",\"%s\",\"%s\")",
-                login, pass, nick);
+    public boolean addMessage(TextMessage message, String login) throws SQLException {
+        String sqlCommand = String.format("INSERT INTO messages (timestamp, login, source, sourceNick, dest, message, isNew) " +
+                        "VALUES(%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\", true)",
+                System.currentTimeMillis(), login, message.getSource(), message.getSourceNick(), message.getDestination(), message.getMessage());
 
         checkConnection();
 
@@ -38,25 +43,29 @@ public class DBConnection {
         return false;
     }
 
-    public boolean updateUser(String login, String pass, String nick) throws SQLException {
-        String sqlCommand = String.format("UPDATE users SET password = \"%s\", nick = \"%s\" WHERE login=\"%s\";",
-                pass, nick, login);
-
-        checkConnection();
-
-        int rows = statement.executeUpdate(sqlCommand);
-        if (rows > 0) return true;
-
-        return false;
-    }
-
-    public boolean checkAuth(String login, String pass) throws SQLException {
-        String sqlCommand = String.format("SELECT id FROM users WHERE login = \"%s\" AND password = \"%s\"",
-                login, pass);
+    public List<TextMessage> getNewMessage(String login) throws SQLException {
+        String sqlCommand = String.format("SELECT * FROM messages WHERE isNew AND login=\"%s\" ORDER BY timestamp;", login);
+        List<TextMessage> result = new ArrayList<>();
+        String idForUpdate = "";
 
         checkConnection();
         ResultSet select = statement.executeQuery(sqlCommand);
-        return select.next();
+        while (select.next()) {
+            TextMessage newMessage = new TextMessage();
+            newMessage.setSource(select.getString("source"));
+            newMessage.setDestination(select.getString("dest"));
+            newMessage.setMessage(select.getString("message"));
+            newMessage.setSourceNick(select.getString("sourceNick"));
+
+            result.add(newMessage);
+
+            idForUpdate += ""+select.getInt("id")+",";
+        }
+        idForUpdate += "0";
+        sqlCommand = String.format("UPDATE messages SET isNew = false WHERE id IN (%s) AND login=\"%s\"", idForUpdate, login);
+        statement.executeUpdate(sqlCommand);
+
+        return result;
 
     }
 
