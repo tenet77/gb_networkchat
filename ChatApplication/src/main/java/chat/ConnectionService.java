@@ -35,6 +35,10 @@ public class ConnectionService {
         return nick;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
     public boolean isAuth() {
         return isAuth;
     }
@@ -94,7 +98,7 @@ public class ConnectionService {
 
     public void login(String login, String password, String nick) throws Exception {
 
-        closeConnection();
+        isAuth = false;
         openConnection();
 
         AuthMessage authMessage = new AuthMessage(login, password, nick);
@@ -116,20 +120,17 @@ public class ConnectionService {
             TextMessage textMessage = new TextMessage();
             textMessage.setMessage(msg);
             textMessage.setSource(login);
+            textMessage.setSourceNick(nick);
             sendMessageToServer(textMessage);
         }
     }
 
     private boolean checkConnection() {
         if (!isAuth) {
-            controller.sendMessageTo("Login required", "System");
+            controller.sendMessageToFront("Login required", "System", "System", "");
             return false;
         }
 
         return true;
-    }
-
-    public void showTextMessage(Message message) {
-        controller.sendMessageTo(message.getSource(), message.getSource());
     }
 }

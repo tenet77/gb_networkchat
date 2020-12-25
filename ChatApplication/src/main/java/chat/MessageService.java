@@ -39,8 +39,12 @@ public class MessageService {
         if (message instanceof AuthMessage) {
             handleAuthMessage((AuthMessage) message);
         } else if (message instanceof TextMessage) {
-            connectionService.showTextMessage(message);;
+            handleTextMessage((TextMessage) message);
         }
+    }
+
+    private void handleTextMessage(TextMessage message) throws Exception {
+        DBConnection.getInstance().addMessage(message, connectionService.getLogin());
     }
 
     private void handleAuthMessage(AuthMessage message) throws Exception {
