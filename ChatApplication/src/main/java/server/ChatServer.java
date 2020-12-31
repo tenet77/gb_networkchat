@@ -3,7 +3,10 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import messages.*;
 
@@ -11,6 +14,7 @@ public class ChatServer implements Runnable {
 
     private final int PORT = 8189;
     private final ConcurrentLinkedDeque<ClientHandler> clients;
+    private final ExecutorService executor = Executors.newCachedThreadPool();
 
     public ChatServer() {
         this.clients = new ConcurrentLinkedDeque<>();
@@ -35,12 +39,13 @@ public class ChatServer implements Runnable {
                 Socket socket = server.accept();
                 System.out.println("Connection accepted");
                 ClientHandler client = new ClientHandler(this, socket);
+                executor.execute(client);
                 addClient(client);
-                new Thread(client).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        executor.shutdown();
     }
 
     public void broadCast(Message msg, ClientHandler forClient) throws IOException {

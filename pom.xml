@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>ChatApplication</module>
+        <module>HomeWork_4</module>
     </modules>
 
     <dependencies>
