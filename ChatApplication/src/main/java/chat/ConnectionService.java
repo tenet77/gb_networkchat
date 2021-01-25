@@ -8,6 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 
 public class ConnectionService {
 
@@ -24,6 +25,7 @@ public class ConnectionService {
     private Thread readingThread;
     private MessageService messageService;
     private String errorDescription;
+    private IoHistoryServiceImpl historyService;
 
     public ConnectionService(ChatFormController controller) {
         this.controller = controller;
@@ -67,6 +69,9 @@ public class ConnectionService {
                         if (readByte != -1) {
                             Message message = messageService.getMessageFromStream(byteBuffer, readByte);
                             messageService.handleMessage(message);
+                            if (historyService != null) {
+                                historyService.saveHistory(message);
+                            }
                         }
                     } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
@@ -113,6 +118,11 @@ public class ConnectionService {
             throw new Exception(errorDescription);
         }
 
+        this.historyService = new IoHistoryServiceImpl("history_"+login+".txt");
+        List<TextMessage> list = historyService.getHistory(100);
+        for (TextMessage msg:list) {
+            messageService.handleMessage(msg);
+        }
     }
 
     public void sendTextMessageToServer(String msg) throws IOException {
